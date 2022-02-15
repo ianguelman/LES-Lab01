@@ -7,3 +7,6 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - "./:/home/python/lab01"
+    environment:
+      TOKEN: "???"
+      API_URL: "https://api.github.com/graphql"
