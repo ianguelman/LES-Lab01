@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  scripts:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    volumes:
+      - "./:/home/python/lab01"
