@@ -36,7 +36,7 @@ def run():
         response = graphql.post(
             """
             query ($lastCursor: String, $perPage: Int) {
-                search(query: "stars:>100", type: REPOSITORY, before: $lastCursor, first: $perPage) {
+                search(query: "stars:>100", type: REPOSITORY, after: $lastCursor, first: $perPage) {
                     nodes {
                     ... on Repository {
                             nameWithOwner
