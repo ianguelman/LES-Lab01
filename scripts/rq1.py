@@ -15,20 +15,31 @@ def run():
     for x in range(0, ceil(TOTAL_ITEMS/PER_PAGE)):
         response = graphql.post(
             """
-            query ($lastCursor: String, $perPage: Int) {
+            query popularRepositories ($lastCursor: String, $perPage: Int) {
                 search(query: "stars:>100", type: REPOSITORY, after: $lastCursor, first: $perPage) {
                     nodes {
                     ... on Repository {
                             nameWithOwner
                             url
                             createdAt
+                            pullRequests(states: MERGED) {
+                                totalCount
+                            }
+                            releases {
+                                totalCount
+                            }
+                            updatedAt
+                            stargazerCount
+                            primaryLanguage {
+                                name
+                            }
                         }
                     }
                     pageInfo {
                         endCursor
                         hasNextPage
                     }
-                }    
+                }
             }
             """, {"lastCursor": lastCursor,
                   "perPage": min(PER_PAGE, TOTAL_ITEMS, (TOTAL_ITEMS - len(nodes)))}
