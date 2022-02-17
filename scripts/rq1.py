@@ -33,6 +33,12 @@ def run():
                             primaryLanguage {
                                 name
                             }
+                            issues {
+                                totalCount
+                            }
+                            closed: issues(states: CLOSED) {
+                                totalCount
+                            }
                         }
                     }
                     pageInfo {
