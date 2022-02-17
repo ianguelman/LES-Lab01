@@ -4,7 +4,7 @@ from unittest import result
 from utils.graphql import GraphQL
 
 TOTAL_ITEMS = 1000
-PER_PAGE = 100
+PER_PAGE = 10
 
 
 def run():
