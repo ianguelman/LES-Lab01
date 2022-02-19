@@ -1,3 +1,3 @@
-from scripts.rq1 import run as rq1
+from scripts.query import run as query
 
-rq1()
+query()
