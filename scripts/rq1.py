@@ -4,7 +4,7 @@ from unittest import result
 from utils.graphql import GraphQL
 
 TOTAL_ITEMS = 1000
-PER_PAGE = 35
+PER_PAGE = 25
 
 
 def run():
@@ -12,7 +12,7 @@ def run():
     graphql = GraphQL(os.environ["API_URL"])
     lastCursor = None
 
-    for x in range(0, ceil(TOTAL_ITEMS/PER_PAGE)):
+    for x in range(0, ceil(TOTAL_ITEMS / PER_PAGE)):
         response = graphql.post(
             """
             query popularRepositories ($lastCursor: String, $perPage: Int) {
@@ -47,17 +47,20 @@ def run():
                     }
                 }
             }
-            """, {"lastCursor": lastCursor,
-                  "perPage": min(PER_PAGE, TOTAL_ITEMS, (TOTAL_ITEMS - len(nodes)))}
+            """,
+            {
+                "lastCursor": lastCursor,
+                "perPage": min(PER_PAGE, TOTAL_ITEMS, (TOTAL_ITEMS - len(nodes))),
+            },
         )
 
         print(response)
 
-        if not response["data"]["search"]["pageInfo"]["hasNextPage"]:
-            break
-
         lastCursor = response["data"]["search"]["pageInfo"]["endCursor"]
 
         nodes = nodes + response["data"]["search"]["nodes"]
+
+        if not response["data"]["search"]["pageInfo"]["hasNextPage"]:
+            break
 
     print(len(nodes))
