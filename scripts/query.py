@@ -21,22 +21,22 @@ def run():
                     ... on Repository {
                             nameWithOwner
                             url
+                            stargazerCount
                             createdAt
-                            pullRequests(states: MERGED) {
+                            pullRequests(first: 10, states: MERGED) {
                                 totalCount
                             }
                             releases {
                                 totalCount
                             }
                             updatedAt
-                            stargazerCount
                             primaryLanguage {
                                 name
                             }
-                            issues {
+                            issues (first: 10){
                                 totalCount
                             }
-                            closed: issues(states: CLOSED) {
+                            closed: issues(first: 10, states: CLOSED) {
                                 totalCount
                             }
                         }
