@@ -1,11 +1,10 @@
 from math import ceil
 import os
-from unittest import result
 from utils.graphql import GraphQL
+from utils.mongo import Mongo
 
 TOTAL_ITEMS = 1000
 PER_PAGE = 25
-
 
 def run():
     nodes = []
@@ -53,14 +52,11 @@ def run():
                 "perPage": min(PER_PAGE, TOTAL_ITEMS, (TOTAL_ITEMS - len(nodes))),
             },
         )
-
-        print(response)
-
+        print('{} nodes of {}'.format(len(nodes), TOTAL_ITEMS))
         lastCursor = response["data"]["search"]["pageInfo"]["endCursor"]
-
         nodes = nodes + response["data"]["search"]["nodes"]
-
         if not response["data"]["search"]["pageInfo"]["hasNextPage"]:
             break
 
-    print(len(nodes))
+    Mongo().insert_many(nodes)    
+
