@@ -52,11 +52,14 @@ def run():
                 "perPage": min(PER_PAGE, TOTAL_ITEMS, (TOTAL_ITEMS - len(nodes))),
             },
         )
-        print('{} nodes of {}'.format(len(nodes), TOTAL_ITEMS))
         lastCursor = response["data"]["search"]["pageInfo"]["endCursor"]
         nodes = nodes + response["data"]["search"]["nodes"]
+
+        print('{} nodes of {}'.format(len(nodes), TOTAL_ITEMS))
+
         if not response["data"]["search"]["pageInfo"]["hasNextPage"]:
             break
+
 
     Mongo().insert_many(nodes)    
 
