@@ -26,3 +26,7 @@ class Mongo:
     def insert_many(self, value):
         self.__collection = self.__database[os.environ['PRIMARY_COLLECTION']]
         self.__collection.insert_many(value)
+
+    def get_documents_count(self):
+        self.__collection = self.__database[os.environ['PRIMARY_COLLECTION']]
+        return self.__collection.count_documents({})
