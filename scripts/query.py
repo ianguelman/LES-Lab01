@@ -1,5 +1,6 @@
 from math import ceil
 import os
+from types import NoneType
 from utils.graphql import GraphQL
 from utils.mongo import Mongo
 
@@ -55,8 +56,26 @@ def run():
                     "perPage": min(PER_PAGE, TOTAL_ITEMS, (TOTAL_ITEMS - len(nodes))),
                 },
             )
+            
             lastCursor = response["data"]["search"]["pageInfo"]["endCursor"]
-            nodes = nodes + response["data"]["search"]["nodes"]
+            
+            formatter = lambda node : {
+                "nameWithOwner": node["nameWithOwner"],
+                "url" : node["url"],
+                "stargazerCount": node["stargazerCount"],
+                "createdAt": node["createdAt"],
+                "pullRequests": node["pullRequests"]["totalCount"],
+                "releases": node["releases"]["totalCount"],
+                "updatedAt": node["updatedAt"],
+                "primaryLanguage": 
+                    None
+                    if isinstance(node["primaryLanguage"], NoneType) 
+                    else node["primaryLanguage"]["name"],
+                "issues": node["issues"]["totalCount"],
+                "closed": node["closed"]["totalCount"],
+            }
+            
+            nodes = nodes + list(map(formatter, response["data"]["search"]["nodes"]))
 
             print('{} nodes of {}'.format(len(nodes), TOTAL_ITEMS))
 
